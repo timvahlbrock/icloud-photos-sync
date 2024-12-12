@@ -1,9 +1,9 @@
-import { Command, CommanderError, InvalidArgumentError, Option } from "commander";
+import {Command, CommanderError, InvalidArgumentError, Option} from "commander";
 import Cron from "croner";
 import inquirer from "inquirer";
-import { Resources } from "../lib/resources/main.js";
-import { LogLevel } from "./event/log.js";
-import { ArchiveApp, DaemonApp, iCPSApp, SyncApp, TokenApp } from "./icloud-app.js";
+import {Resources} from "../lib/resources/main.js";
+import {LogLevel} from "./event/log.js";
+import {ArchiveApp, DaemonApp, iCPSApp, SyncApp, TokenApp} from "./icloud-app.js";
 
 /**
  * This function can be used as a commander argParser. It will try to parse the value as a positive integer and throw an invalid argument error in case it fails
@@ -91,7 +91,7 @@ function commanderParseInterval(value: string, _dummyPrevious?: unknown): [numbe
  */
 function commanderParseUrl(value: string, _dummyPrevious?: unknown): string {
     try {
-        new URL(value);
+        const _url = new URL(value);
         return value;
     } catch (err) {
         throw new InvalidArgumentError(`Not a valid URL: ${err}`);
@@ -241,8 +241,9 @@ export function argParser(callback: (res: iCPSApp) => void): Command {
         .addOption(new Option(`--legacy-login`, `Enables plain text legacy login method.`)
             .env(`LEGACY_LOGIN`)
             .default(false))
-        .addOption(new Option(`--healthcheck-ping-url <url>`, `URL to ping to monitor the health of icloud photos sync. The URL is pinged with varying suffixes and body content on start, success, or failure of the sync process. Can be set to a URL from https://healthchecks.io or any other compatible service.`)
+        .addOption(new Option(`--healthCheck-ping-url <url>`, `URL to ping to monitor the health of icloud photos sync. The URL is pinged with varying suffixes and body content on start, success, or failure of the sync process. Can be set to a URL from https://healthchecks.io or any other compatible service.`)
             .env(`HEALTHCHECK_PING_URL`)
+            .default(undefined)
             .argParser(commanderParseUrl));
 
     program.command(`daemon`)
