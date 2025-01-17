@@ -1,17 +1,17 @@
-import {AxiosHarTracker} from "@steilerdev/axios-har-tracker";
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from "axios";
-import {createWriteStream} from "fs";
+import { AxiosHarTracker } from "@steilerdev/axios-har-tracker";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { createWriteStream } from "fs";
 import fs from "fs/promises";
-import {jsonc} from "jsonc";
-import {pEvent} from "p-event";
+import { jsonc } from "jsonc";
+import { pEvent } from "p-event";
 import PQueue from "p-queue";
-import {Cookie} from "tough-cookie";
-import {RESOURCES_ERR} from "../../app/error/error-codes.js";
-import {iCPSError} from "../../app/error/error.js";
-import {iCPSAppOptions} from "../../app/factory.js";
-import {ZoneReference} from "../photos-library/model/zoneReference.js";
-import {Resources} from "./main.js";
-import {CLIENT_ID, CLIENT_INFO, COOKIE_KEYS, ENDPOINTS, HEADER_KEYS, SetupResponse, SigninResponse, TrustResponse, USER_AGENT} from "./network-types.js";
+import { Cookie } from "tough-cookie";
+import { RESOURCES_ERR } from "../../app/error/error-codes.js";
+import { iCPSError } from "../../app/error/error.js";
+import { iCPSAppOptions } from "../../app/factory.js";
+import { ZoneReference } from "../photos-library/model/zoneReference.js";
+import { Resources } from "./main.js";
+import { CLIENT_ID, CLIENT_INFO, COOKIE_KEYS, ENDPOINTS, HEADER_KEYS, SetupResponse, SigninResponse, TrustResponse, USER_AGENT } from "./network-types.js";
 
 /**
  * Object holding all necessary information for a specific header value, that needs to be reused across multiple requests
@@ -426,18 +426,12 @@ export class NetworkManager {
                 .addContext(`zones`, zones);
         }
 
-        Resources.manager().primaryZone = {
-            ...primaryZoneData.zoneID,
-            area: `private`,
-        };
+        Resources.manager().primaryZone = primaryZoneData.zoneID
 
         const sharedZoneData = zones.find(zone => zone.zoneID.zoneName.startsWith(`SharedSync-`));
         if (sharedZoneData && (sharedZoneData.deleted === undefined || sharedZoneData.deleted === false)) {
             Resources.logger(this).debug(`Found shared zone ${sharedZoneData.zoneID.zoneName}`);
-            Resources.manager().sharedZone = {
-                ...sharedZoneData.zoneID,
-                area: sharedZoneData.area,
-            };
+            Resources.manager().sharedZone = sharedZoneData.zoneID;
         }
     }
 
